@@ -11,8 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,7 +20,6 @@ public class RestStatClient implements StatClient {
     private final String statUrl;
     private final RestClient restClient;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
 
 
     public RestStatClient(@Value("${client.url}") String statUrl) {
@@ -52,14 +49,12 @@ public class RestStatClient implements StatClient {
 
     @Override
     public List<ViewStats> getStat(ParamDto paramDto) {
-        String start = URLEncoder.encode(paramDto.getStart().format(formatter), StandardCharsets.UTF_8);
-        String end = URLEncoder.encode(paramDto.getEnd().format(formatter), StandardCharsets.UTF_8);
         return restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/stats")
-                            .queryParam("start", start)
-                            .queryParam("end", end);
+                            .queryParam("start", paramDto.getStart().toString())
+                            .queryParam("end", paramDto.getEnd().toString());
                     List<String> uris = paramDto.getUris();
                     if (uris != null && !uris.isEmpty()) {
                         builder.queryParam("uris", uris);
