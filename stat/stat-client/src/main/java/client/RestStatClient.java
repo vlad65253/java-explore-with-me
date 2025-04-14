@@ -12,14 +12,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
 public class RestStatClient implements StatClient {
     private final String statUrl;
     private final RestClient restClient;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
     public RestStatClient(@Value("${client.url}") String statUrl) {
@@ -31,12 +29,11 @@ public class RestStatClient implements StatClient {
 
     @Override
     public void hit(String app, String uri, String ip) {
-        ParamHitDto dto = ParamHitDto.builder()
-                .app(app)
-                .uri(uri)
-                .ip(ip)
-                .timestamp(LocalDateTime.now())
-                .build();
+        ParamHitDto dto = new ParamHitDto();
+        dto.setIp(ip);
+        dto.setTimestamp(LocalDateTime.now());
+        dto.setUri(uri);
+        dto.setApp(app);
         restClient.post()
                 .uri("/hit")
                 .contentType(MediaType.APPLICATION_JSON)
