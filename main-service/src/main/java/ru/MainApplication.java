@@ -19,20 +19,22 @@ public class MainApplication {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
         StatClient statClient = context.getBean(StatClient.class);
 
-        ParamHitDto hitDto = new ParamHitDto();
-        hitDto.setApp("ewm-main-service");
-        hitDto.setUri("/events");
-        hitDto.setIp("121.0.0.1");
-        hitDto.setTimestamp(LocalDateTime.now());
+        ParamHitDto hitDto = ParamHitDto.builder()
+                .app("ewm-main-service")
+                .uri("/events")
+                .ip("121.0.0.1")
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        ParamHitDto hitDto2 = new ParamHitDto();
-        hitDto2.setApp(hitDto.getApp());
-        hitDto2.setUri("/test");
-        hitDto2.setIp(hitDto.getIp());
-        hitDto2.setTimestamp(hitDto.getTimestamp());
+        ParamHitDto hitDto2 = ParamHitDto.builder()
+                .app("ewm-main-service")
+                .uri("/test")
+                .ip("121.0.0.1")
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        statClient.hit(hitDto);
-        statClient.hit(hitDto2);
+        statClient.hit(hitDto.getApp(), hitDto.getUri(), hitDto.getIp());
+        statClient.hit(hitDto2.getApp(), hitDto2.getUri(), hitDto2.getIp());
 
         ParamDto paramDto = new ParamDto(
                 LocalDateTime.now().minusDays(1),

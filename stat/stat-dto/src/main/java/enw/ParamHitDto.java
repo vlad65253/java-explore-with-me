@@ -1,6 +1,7 @@
 package enw;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 public class ParamHitDto {
     private String app;
     private String uri;
