@@ -1,7 +1,7 @@
 package ewm.event.controller;
 
-import enw.ParamHitDto;
 import client.RestStatClient;
+import enw.ParamHitDto;
 import ewm.event.dto.EventFullDto;
 import ewm.event.dto.EventShortDto;
 import ewm.event.dto.ReqParam;
