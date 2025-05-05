@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.service.StatService;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,13 @@ public class StatController {
                                     @RequestParam(name = "uris", required = false) List<String> uris,
                                     @RequestParam(name = "unique", defaultValue = "false") boolean unique) {
         log.info("Запрос /stat поступил");
+        if (start == null || end == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Параметры 'start' и 'end' обязательны");
+        }
+
+        if (start.isAfter(end)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Неправильный диапазон времени");
+        }
         List<ViewStats> stats = statService.getStat(new ParamDto(start, end, uris, unique));
         log.info("Запрос /stat обработан успешно \uD83D\uDC4D");
         return stats;
