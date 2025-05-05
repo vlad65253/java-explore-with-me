@@ -1,12 +1,11 @@
 package ewm.event.service;
 
+import client.RestStatClient;
 import enw.ParamDto;
 import ewm.category.model.Category;
 import ewm.category.repository.CategoryRepository;
-import client.RestStatClient;
 import ewm.event.dto.*;
 import ewm.event.mapper.EventMapper;
-import ewm.event.mapper.LocationMapper;
 import ewm.event.model.*;
 import ewm.event.repository.EventRepository;
 import ewm.event.repository.LocationRepository;
@@ -41,7 +40,6 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
     private final RequestRepository requestRepository;
-    private final LocationMapper locationMapper;
 
     @Override
     public List<EventShortDto> getAllEvents(ReqParam reqParam) {
