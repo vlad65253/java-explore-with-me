@@ -5,13 +5,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum EventState {
-    PUBLISHED,
     PENDING,
+    PUBLISHED,
     CANCELED;
+
     public static Set<EventState> from(List<String> states) {
         return states.stream()
-                .map(state -> EventState.valueOf(state.toUpperCase()))
-                .collect(Collectors.toSet());
+                .map(state -> {
+                    for (EventState value : EventState.values()) {
+                        if (value.name().equalsIgnoreCase(state)) {
+                            return value;
+                        }
+                    }
+                    return null;
+                }).collect(Collectors.toSet());
     }
 
-    }
+}

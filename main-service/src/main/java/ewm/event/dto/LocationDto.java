@@ -1,10 +1,10 @@
 package ewm.event.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 public class LocationDto {
     private Float lat;
     private Float lon;
