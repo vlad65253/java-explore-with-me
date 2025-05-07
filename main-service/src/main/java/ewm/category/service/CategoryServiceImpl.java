@@ -6,6 +6,7 @@ import ewm.category.mapper.CategoryMapper;
 import ewm.category.model.Category;
 import ewm.category.repository.CategoryRepository;
 import ewm.event.repository.EventRepository;
+import ewm.exception.ConditionNotMetException;
 import ewm.exception.EntityNotFoundException;
 import ewm.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         boolean hasEvents = eventRepository.existsByCategoryId(id);
         if (hasEvents) {
-            throw new ValidationException(Category.class, "Невозможно удалить категорию: к ней привязаны события");
+            throw new ConditionNotMetException("Невозможно удалить категорию: к ней привязаны события");
         }
 
         categoryRepository.delete(category);
