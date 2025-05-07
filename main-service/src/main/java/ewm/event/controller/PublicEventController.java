@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static ewm.utility.Constants.FORMAT_DATETIME;
+import static ewm.utility.Constants.MAIN_SERVICE;
 
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
 public class PublicEventController {
 
-    private static final String MAIN_SERVICE = "ewm-main-service";
     private final EventService eventService;
     private final RestStatClient statClient;
 
