@@ -8,7 +8,6 @@ import ewm.category.repository.CategoryRepository;
 import ewm.event.repository.EventRepository;
 import ewm.exception.ConditionNotMetException;
 import ewm.exception.EntityNotFoundException;
-import ewm.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
