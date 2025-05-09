@@ -50,7 +50,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         categoryRepository.delete(category);
-        categoryRepository.deleteById(id);
     }
 
     public CategoryDto updateCategory(Long id, CategoryDto categoryDto) {
