@@ -1,13 +1,14 @@
 package client;
 
 import enw.ParamDto;
+import enw.ParamHitDto;
 import enw.ViewStats;
 
 import java.util.List;
 
 public interface StatClient {
 
-    void hit(String app, String uri, String ip);
+    void hit(ParamHitDto dto);
 
     List<ViewStats> getStat(ParamDto paramDto);
 }

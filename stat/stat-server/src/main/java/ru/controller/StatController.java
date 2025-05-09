@@ -31,13 +31,16 @@ public class StatController {
     }
 
     @GetMapping("/stats")
-    public List<ViewStats> getAllStats(@DateTimeFormat(pattern = DATE_TIME_FORMAT) @RequestParam(name = "start") LocalDateTime start,
-                                    @DateTimeFormat(pattern = DATE_TIME_FORMAT) @RequestParam(name = "end") LocalDateTime end,
-                                    @RequestParam(name = "uris", required = false) List<String> uris,
-                                    @RequestParam(name = "unique", defaultValue = "false") boolean unique) {
-        log.info("Запрос /stat поступил");
+    public List<ViewStats> getAllStats(
+            @RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT) LocalDateTime start,
+            @RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT) LocalDateTime end,
+            @RequestParam(required = false) List<String> uris,
+            @RequestParam(defaultValue = "false") Boolean unique
+    ) {
+        log.info("Запрос /stats поступил");
+
         List<ViewStats> stats = statService.getStat(new ParamDto(start, end, uris, unique));
-        log.info("Запрос /stat обработан успешно \uD83D\uDC4D");
+        log.info("Запрос /stats обработан успешно \uD83D\uDC4D");
         return stats;
     }
 }

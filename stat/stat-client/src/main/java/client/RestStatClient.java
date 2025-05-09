@@ -28,16 +28,16 @@ public class RestStatClient implements StatClient {
     }
 
     @Override
-    public void hit(String app, String uri, String ip) {
-        ParamHitDto dto = new ParamHitDto();
-        dto.setIp(ip);
-        dto.setTimestamp(LocalDateTime.now());
-        dto.setUri(uri);
-        dto.setApp(app);
+    public void hit(ParamHitDto dto) {
+        ParamHitDto dtoTemp = new ParamHitDto();
+        dtoTemp.setIp(dto.getIp());
+        dtoTemp.setTimestamp(LocalDateTime.now());
+        dtoTemp.setUri(dto.getUri());
+        dtoTemp.setApp(dto.getApp());
         restClient.post()
                 .uri("/hit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(dto)
+                .body(dtoTemp)
                 .retrieve()
                 .onStatus(status -> status != HttpStatus.CREATED, (request, response) -> {
                     throw new InvalidRequestException(response.getStatusCode().value() + ": " + response.getBody());
