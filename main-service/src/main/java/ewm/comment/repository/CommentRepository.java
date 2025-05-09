@@ -19,6 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByAuthorId(Long userId, Pageable pageable);
 
     List<Comment> findAllByEventId(Long eventId, Pageable pageable);
+
     @Query(value = """
             SELECT c.event_id AS eventId, count(event_id) AS commentCount
                    FROM comments c

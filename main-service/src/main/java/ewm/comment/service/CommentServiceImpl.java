@@ -24,12 +24,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CommentMapper commentMapper;
     private final RequestRepository requestRepository;
+
     @Override
     public CommentDto privateAddComment(Long eventId, Long authorId, InputCommentDto inputCommentDto) {
         Event event = eventRepository.findById(eventId)
@@ -37,10 +38,10 @@ public class CommentServiceImpl implements CommentService{
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, "Пользователь с ID - " + authorId + " не найден"));
-        if(event.getInitiator().equals(author)){
+        if (event.getInitiator().equals(author)) {
             throw new ValidationException(Comment.class, "Нельзя оставить комментарий к своему событию");
         }
-        if(requestRepository.findByRequesterIdAndEventId(authorId, eventId).isEmpty()){
+        if (requestRepository.findByRequesterIdAndEventId(authorId, eventId).isEmpty()) {
             throw new ValidationException(Comment.class, "Пользователь с ID - " + authorId + " не заявился на событие с ID - " + eventId);
         }
         Comment comment = commentMapper.toComment(inputCommentDto, author, event);
@@ -55,7 +56,7 @@ public class CommentServiceImpl implements CommentService{
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, "Пользователь с ID - " + authorId + " не найден"));
-        if(!comment.getAuthor().equals(author)){
+        if (!comment.getAuthor().equals(author)) {
             throw new InitiatorRequestException("Нельзя удалить чужой комментарий");
         }
         commentRepository.deleteById(commentId);
@@ -68,7 +69,7 @@ public class CommentServiceImpl implements CommentService{
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, "Пользователь с ID - " + authorId + " не найден"));
-        if(!comment.getAuthor().equals(author)){
+        if (!comment.getAuthor().equals(author)) {
             throw new InitiatorRequestException("Нельзя изменить чужой комментарий");
         }
         comment.setText(updateCommentDto.getText());
