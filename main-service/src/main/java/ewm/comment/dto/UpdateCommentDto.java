@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateCommentDto {
+    private Long id;
     @NotBlank(message = "Комментарий не может быть пустым")
     @Size(min = 1, max = 7000)
     private String text;

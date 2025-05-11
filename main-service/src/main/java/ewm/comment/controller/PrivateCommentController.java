@@ -17,29 +17,27 @@ import java.util.List;
 public class PrivateCommentController {
     private final CommentService commentService;
 
-    @PostMapping("/{eventId}/{userId}")
+    @PostMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto privateAddComment(@PathVariable(name = "eventId") Long eventId,
-                                        @PathVariable(name = "userId") Long authorId,
+    public CommentDto privateAddComment(@PathVariable(name = "userId") Long authorId,
                                         @Valid @RequestBody InputCommentDto inputCommentDto) {
-        return commentService.privateAddComment(eventId, authorId, inputCommentDto);
+        return commentService.privateAddComment(authorId, inputCommentDto);
     }
 
-    @DeleteMapping("/{commentId}/{userId}")
+    @DeleteMapping("/users/{commentId}/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void privateDeleteComment(@PathVariable(name = "commentId") Long commentId,
                                      @PathVariable(name = "userId") Long authorId) {
         commentService.privateDeleteComment(commentId, authorId);
     }
 
-    @PatchMapping("/{commentId}/{userId}")
-    public CommentDto privatePatchComment(@PathVariable(name = "commentId") Long commentId,
-                                          @PathVariable(name = "userId") Long authorId,
+    @PatchMapping("/users/{userId}")
+    public CommentDto privatePatchComment(@PathVariable(name = "userId") Long authorId,
                                           @Valid @RequestBody UpdateCommentDto updateCommentDto) {
-        return commentService.privatePatchComment(commentId, authorId, updateCommentDto);
+        return commentService.privatePatchComment(authorId, updateCommentDto);
     }
 
-    @GetMapping("/{eventId}/{userId}")
+    @GetMapping("/users/{eventId}/{userId}")
     public List<CommentDto> findCommentsByEventIdAndUserId(@PathVariable(name = "eventId") Long eventId,
                                                            @PathVariable(name = "userId") Long userId,
                                                            @RequestParam(name = "from", defaultValue = "0") Integer from,

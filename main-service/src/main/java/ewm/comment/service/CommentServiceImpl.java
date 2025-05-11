@@ -7,9 +7,11 @@ import ewm.comment.mapper.CommentMapper;
 import ewm.comment.model.Comment;
 import ewm.comment.repository.CommentRepository;
 import ewm.event.model.Event;
+import ewm.event.model.EventState;
 import ewm.event.repository.EventRepository;
 import ewm.exception.EntityNotFoundException;
 import ewm.exception.InitiatorRequestException;
+import ewm.exception.NotPublishEventException;
 import ewm.exception.ValidationException;
 import ewm.requests.repository.RequestRepository;
 import ewm.user.model.User;
@@ -32,10 +34,13 @@ public class CommentServiceImpl implements CommentService {
     private final RequestRepository requestRepository;
 
     @Override
-    public CommentDto privateAddComment(Long eventId, Long authorId, InputCommentDto inputCommentDto) {
+    public CommentDto privateAddComment(Long authorId, InputCommentDto inputCommentDto) {
+        Long eventId = inputCommentDto.getEventId();
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EntityNotFoundException(Event.class, "Событие с ID " + eventId + " не найдено"));
-
+        if (event.getState().equals(EventState.CANCELED)) {
+            throw new NotPublishEventException("Событие еще не завершилось");
+        }
         User author = userRepository.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, "Пользователь с ID - " + authorId + " не найден"));
         if (event.getInitiator().equals(author)) {
@@ -63,7 +68,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto privatePatchComment(Long commentId, Long authorId, UpdateCommentDto updateCommentDto) {
+    public CommentDto privatePatchComment(Long authorId, UpdateCommentDto updateCommentDto) {
+        Long commentId = updateCommentDto.getId();
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException(Event.class, "Комментария с ID " + commentId + " не найдено"));
 
@@ -105,9 +111,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Comment.class, "Комментарий c ID - " + id + ", не найден."));
 
-        if (updateCommentDto.getText() != null) {
-            comment.setText(updateCommentDto.getText());
-        }
+        comment.setText(updateCommentDto.getText());
         return commentMapper.toCommentDto(commentRepository.save(comment));
     }
 
